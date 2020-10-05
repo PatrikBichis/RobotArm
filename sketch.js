@@ -1,5 +1,5 @@
-var _length = 400;
-var _height = 400;
+var _length = 860;
+var _height = 440;
 
 const FPS = 60;
 
@@ -14,7 +14,7 @@ const PIXEL_STEEP = 36 / (STEEP_COUNT * STEPPER1_MICROSTEP);
 
 const STEPPER2_TRANS = 5;
 
-const STEPPER1_MAX = (_length - 100) / PIXEL_STEEP
+const STEPPER1_MAX = (400 - 40) / PIXEL_STEEP
 const STEPPER2_MAX = ((STEEP_COUNT * STEPPER2_MICROSTEP) * STEPPER2_TRANS) * 45 / 360 //deg
 
 var STEPPER1 = 0;
@@ -26,6 +26,7 @@ function setup() {
 
 function draw() {
   background(220);
+  drawViewPorts();
   drawBase();
   
   setAxis1Translation(STEPPER1);
@@ -33,6 +34,9 @@ function draw() {
   
   setAxis2Rotation(STEPPER2)
   drawAxis2();
+
+  setAxis3Rotation(0)
+  drawAxis3();
   
   runSteepersToTarget(STEPPER1_MAX, STEPPER2_MAX)
 }
@@ -42,27 +46,52 @@ function runSteepersToTarget(step1, step2){
   if(STEPPER2 < step2) STEPPER2 += STEPPER2_SPEED / FPS;
 }
 
+function drawViewPorts(){
+  rect(20,20, 400, 400);
+  rect(440,20, 400, 400);
+}
+
 function drawBase(){
-  line(0, _height/2, _length, _height/2);
+  translate(0,300);
+  line(40, 0, 400,0);
 }
 
 function drawAxis1(steps){
   rect(0, -5, 20, 10)
+  line(10, -5 , 10 ,-20)
+  translate(0,-20);
 }
 
 function drawAxis2(){
-  circle(0, 0, 10);
+  line(-20, 0, 0, 0);
+  circle(-20, 0, 5);
   line(0, 0, 0, -50)
+  circle(0, 0, 10);
+}
+
+function drawAxis3(){
+  line(-20, 0, 0, 0);
+  circle(-20, 0, 5);
+  line(0, 0, 50, 0)
+  circle(0, 0, 10);
+  
 }
 
 function setAxis1Translation(steps){
   var p = PIXEL_STEEP * steps
-  translate(p, _height/2 - 5);
+  translate(p, 0);
 }
 
 function setAxis2Rotation(steps){
   s = steps / (((STEEP_COUNT * STEPPER2_MICROSTEP) * STEPPER2_TRANS) / 360);
   translate(10,-5);
+  angleMode(DEGREES);
+  rotate(s);
+}
+
+function setAxis3Rotation(steps){
+  s = 0;
+  translate(0,-50);
   angleMode(DEGREES);
   rotate(s);
 }
