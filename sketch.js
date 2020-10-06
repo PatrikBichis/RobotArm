@@ -20,25 +20,100 @@ const STEPPER2_MAX = ((STEEP_COUNT * STEPPER2_MICROSTEP) * STEPPER2_TRANS) * 45 
 var STEPPER1 = 0;
 var STEPPER2 = 0;
 
+let slider_axis_1;
+let slider_axis_2;
+let slider_axis_3;
+
 function setup() {
   createCanvas(_length, _height);
+
+  slider_axis_1 = createSlider(0, 270, 0);
+  slider_axis_1.position(460, 40);
+  slider_axis_1.style('width', '380px');
+
+  slider_axis_2 = createSlider(-145, 145, 0);
+  slider_axis_2.position(460, 80);
+  slider_axis_2.style('width', '380px');
+
+  slider_axis_3 = createSlider(-45, 60, 0);
+  slider_axis_3.position(460, 120);
+  slider_axis_3.style('width', '380px');
 }
 
 function draw() {
+
+  var AXIS_1 = slider_axis_1.value();
+  var AXIS_2 = slider_axis_2.value();
+  var AXIS_3 = slider_axis_3.value();
+
+  angleMode(DEGREES);
+
   background(220);
   drawViewPorts();
   drawBase();
   
-  setAxis1Translation(STEPPER1);
+  translate(AXIS_1 + 50,0);
+
+  rect(0, -5, 20, 10)
+  line(10, -5 , 10 ,-20)
+  translate(10, -20);
+
+  line(0, 0, -10, 0);
+  circle(-10, 0, 2);
+
+  translate(-10, 0);
+  rotate(AXIS_2);
+  circle(0, -40, 2);
+  line(0, 0, 0, -40);
+
+  rotate(-AXIS_2);
+  translate(10, 0);
+  rotate(AXIS_2);
+  circle(0, 0, 15);
+  circle(0, 0, 2);
+
+  circle(0, -40, 2);
+  line(0, 0, 0, -40);
+
+  translate(0, -40);
+  rotate(-AXIS_2);
+  //Triangle
+  circle(0, -10, 2);
+  line(0, 0, -10, 0);
+  line(0, 0, 0, -10);
+  line(-10, 0, 0, -10);
+
+  rotate(AXIS_3);
+  //circle(40, -10, 2);
+  circle(40, 0, 2);
+  line(-10, 0, 40, 0);
+  //line(0, -10, 40, -10);
+  //line(0 + 40, 0, 40, -10)
+  //line(0 + 40, -5, 40 + 10, -5)
+
+  rotate(-AXIS_3);
+  translate(0, -10);
+  rotate(AXIS_3);
+  circle(40, 0, 2);
+  line(0, 0, 40, 0);
+
+  translate(40,0);
+  rotate(-AXIS_3);
+  line(0, 0, 0, 10);
+  line(0, 5, 10, 5);
+  
+
+
+  /* setAxis1Translation(STEPPER1);
   drawAxis1();
   
   setAxis2Rotation(STEPPER2)
   drawAxis2();
 
   setAxis3Rotation(0)
-  drawAxis3();
+  drawAxis3(); */
   
-  runSteepersToTarget(STEPPER1_MAX, STEPPER2_MAX)
+  /* runSteepersToTarget(STEPPER1_MAX, STEPPER2_MAX) */
 }
 
 function runSteepersToTarget(step1, step2){
